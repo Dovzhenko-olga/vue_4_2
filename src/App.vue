@@ -1,36 +1,27 @@
 <template>
 <message-item v-for="message in messagesList" :key="message.id"
-:userMessage="message" @like="onLike" @dislike="onDislike"/>
-<label>
-  <input type="text" placeholder="Type a new message" v-model="userMessage">
-</label>
-<button @click="addMessage">Send</button>
+:user-message="message" @like="onLike" @dislike="onDislike"/>
+<message-input @add="addMessage"/>
 </template>
 
 <script>
 import MessageItem from "./components/MessageItem.vue";
+import MessageInput from './components/MessageInput.vue';
 
 export default {
   name: 'App',
   components: {
     MessageItem,
+    MessageInput,
   },
   data() {
     return {
-      userMessage: null,
       messagesList: [],
     }
   },
   methods:{
-    addMessage(){
-      if(this.userMessage)
-      this.messagesList.push(
-        {id: new Date().getTime(),
-          text: this.userMessage,
-          likesCount: 0,
-        }
-      )
-        this.userMessage = null
+    addMessage(message){
+      this.messagesList.push(message)
     },
     onLike(idToLike){
       const currentMessage = this.messagesList.find(message=> message.id === idToLike)
